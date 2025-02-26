@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Correo</title>
+</head>
+<body>
+<div id="contenedor">
+    <h1>Enviar Correo Electrónico</h1>
+    <div style="background-color: blue" id="container">
+        <h3>Email Testing</h3>
+        <p>Hola esto es un test de email</p>
+    </div>
+    <button id="enviarCorreo">Enviar Correo</button>
+</div>
+
+<script>
+    document.getElementById('enviarCorreo').addEventListener('click', function() {
+        var containerContent = document.getElementById('container').innerHTML; // Obtiene el contenido HTML del div
+        var nombre = "Juan Pérez";  // Simulación de nombre dinámico
+        var link = "https://ucsg.edu.ec";  // Link de prueba
+
+        if (containerContent) {
+            var url = "/sendEmail?to=" + encodeURIComponent('jhonny.tomala@outlook.es') +
+                "&subject=" + encodeURIComponent('Test') +
+                "&nombre=" + encodeURIComponent(nombre) +
+                "&mensaje=" + encodeURIComponent(containerContent) +
+                "&link=" + encodeURIComponent(link); // Incluye los parámetros correctos
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                })
+                .catch(error => {
+                    alert("Error al enviar el correo: " + error);
+                });
+        } else {
+            alert("Por favor, complete todos los campos.");
+        }
+    });
+</script>
+</body>
+</html>
