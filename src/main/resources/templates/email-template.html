@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCSGTEC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
 </head>
 
 <body style="margin: 0; padding: 0; font-family: 'Montserrat', sans-serif;">
@@ -29,20 +33,74 @@
                         </h2>
 
                         <p style="color: #000000; font-size: 15px; line-height: 1.6; font-weight: 500;">
-                            Estimado/a <strong th:text="${nombre}">Nombre</strong>
+                            Estimado/a <strong th:text="${nombre}"></strong>
                         </p>
 
                         <p style="color: #080808; font-size: 14px; line-height: 1.6; margin: 0 auto 30px;
-                                      text-align: center; max-width: 540px; font-weight: 500;">
+                                  text-align: center; max-width: 540px; font-weight: 500;">
                             <span th:text="${mensaje}">Mensaje dinámico aquí</span>
                         </p>
 
+                        <p style="color: #000000; font-weight: 600; font-size: 17px; margin-bottom: 25px;
+                                  line-height: 1.5; max-width: 540px; margin-left: auto; margin-right: auto;
+                                  font-style: italic;">
+                            ¡Estás a un paso de completar tu inscripción! Para asegurar tu lugar, solo necesitas subir tus
+                            documentos y, por esta oportunidad, puedes separarla con solo $20.
+                        </p>
+
+                        <img src="https://i.ibb.co/1GVSvqRV/Frame-3.png" alt="Reserva tu inscripción con solo $20"
+                             style="width: 650px; margin-bottom: 25px;" />
+
+                        <h3 style="color: #000000; margin-bottom: 20px; font-weight: 600;">
+                            <img src="https://i.ibb.co/zhkq36jP/tachuela.png" alt="Icono" width="20" height="20">
+                            <strong> ¿Qué hacer ahora?</strong>
+                        </h3>
+                        <ul style="text-align: center; color: #000000; margin-bottom: 25px; list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 10px; font-weight: 500;">
+                                <img src="https://i.ibb.co/4RytjN6C/check.png" alt="Icono" width="20" height="20">
+                                Sube tus documentos en nuestra plataforma.
+                            </li>
+                            <li style="margin-bottom: 10px; font-weight: 500;">
+                                <img src="https://i.ibb.co/4RytjN6C/check.png" alt="Icono" width="20" height="20">
+                                Realiza el pago de $20 para reservar tu inscripción.
+                            </li>
+                        </ul>
+
                         <a th:href="${link}"
                            style="background-color: #c41250; color: white; padding: 15px 30px;
-                                      text-decoration: none; border-radius: 30px; font-weight: 600;
-                                      display: block; margin-bottom: 25px; text-align: center;">
+                                  text-decoration: none; border-radius: 30px; font-weight: 600;
+                                  display: block; margin-bottom: 25px; text-align: center;">
                             Completar datos
                         </a>
+
+                        <img src="https://i.ibb.co/MkZxRFLQ/te-esperamos.png" alt="Te esperamos"
+                             style="width: 100%; max-width: 400px; margin-bottom: 20px;" />
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Footer -->
+            <table cellpadding="0" cellspacing="0" width="1000" style="background-color: #333; margin-top: 20px;">
+                <tr>
+                    <td style="padding: 20px; text-align: center; color: white;">
+                        <img src="https://i.ibb.co/cf0ng6g/tec.png" alt="UCSGTEC" style="width: 220px; margin-bottom: 20px;" />
+                        <p style="margin-bottom: 10px; font-weight: 500;">
+                            <img src="https://i.ibb.co/whZscgVF/phone.png" alt="Icono" width="20" height="20"
+                                 style="margin-right: 10px;">
+                            (04) 222 2024 - (04) 222 2025
+                        </p>
+
+                        <p style="margin-bottom: 10px; font-weight: 500;">
+                            <img src="https://i.ibb.co/4Rznf9Jy/email.png" alt="Icono" width="20" height="20"
+                                 style="margin-right: 10px;">
+                            admision.tec@cu.ucsg.edu.ec
+                        </p>
+
+                        <p style="margin-bottom: 20px; font-weight: 500;">
+                            <img src="https://i.ibb.co/SXbBwgxy/ubicacion.png" alt="Icono" width="20" height="20"
+                                 style="margin-right: 10px;">
+                            Av. Carlos Julio Arosemena Km 1 ½
+                        </p>
                     </td>
                 </tr>
             </table>
@@ -50,4 +108,5 @@
     </tr>
 </table>
 </body>
+
 </html>
