@@ -12,7 +12,7 @@ import org.thymeleaf.context.Context;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.HashMap;
+//import java.util.HashMap;
 
 @Service
 public class EmailService {
@@ -32,7 +32,7 @@ public class EmailService {
         String htmlContent = templateEngine.process("email-template", context);
 
         helper.setFrom("soporte.siu@ucsg.edu.ec");
-        helper.setCc("crispal94@hotmail.com");
+        helper.setCc("ismael.sosa@cu.ucsg.edu.ec");
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true); // `true` indica que es HTML
