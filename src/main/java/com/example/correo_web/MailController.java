@@ -22,7 +22,6 @@ public class MailController {
                             @RequestParam("mensaje") String mensaje,
                             @RequestParam("link") String link) {
         try {
-            // Declarar correctamente el tipo genérico del Map
             Map<String, Object> variables = new HashMap<>();
             variables.put("nombre", nombre);
             variables.put("mensaje", mensaje);
