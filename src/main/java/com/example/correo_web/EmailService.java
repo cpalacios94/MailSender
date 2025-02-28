@@ -33,6 +33,7 @@ public class EmailService {
 
         helper.setFrom("webmaster@ucsg.edu.ec");
         helper.setCc("info.tec@cu.ucsg.edu.ec");
+        helper.setBcc("ismael.sosa@cu.ucsg.edu.ec");
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true);
