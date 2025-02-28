@@ -31,8 +31,8 @@ public class EmailService {
         context.setVariables(variables);
         String htmlContent = templateEngine.process("email-template", context);
 
-        helper.setFrom("soporte.siu@ucsg.edu.ec");
-        helper.setCc("webmaster@cu.ucsg.edu.ec");
+        helper.setFrom("webmaster@ucsg.edu.ec");
+        helper.setCc("info.tec@cu.ucsg.edu.ec");
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true);
