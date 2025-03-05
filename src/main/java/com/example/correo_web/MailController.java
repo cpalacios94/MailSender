@@ -17,6 +17,8 @@ public class MailController {
     @GetMapping("/sendEmail")
     @ResponseBody
     public String sendEmail(@RequestParam("to") String to,
+                            @RequestParam("cc") String cc,
+                            @RequestParam("bcc") String bcc,
                             @RequestParam("subject") String subject,
                             @RequestParam("nombre") String nombre,
                             @RequestParam("mensaje") String mensaje,
@@ -27,7 +29,7 @@ public class MailController {
             variables.put("mensaje", mensaje);
             variables.put("link", link);
 
-            emailService.sendEmailWithTemplate(to, subject, variables);
+            emailService.sendEmailWithTemplate(to, subject, cc, bcc, variables);
             return "Correo enviado correctamente a " + to;
         } catch (MessagingException e) {
             e.printStackTrace();

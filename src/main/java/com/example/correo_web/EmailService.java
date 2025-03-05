@@ -23,16 +23,16 @@ public class EmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void sendEmailWithTemplate(String to, String subject, Map<String, Object> variables) throws MessagingException {
+    public void sendEmailWithTemplate(String to, String subject,String cc, String bcc, Map<String, Object> variables) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
-
+        String[] bccArray = bcc.split(";");
         Context context = new Context();
         context.setVariables(variables);
         String htmlContent = templateEngine.process("email-template", context);
         helper.setFrom("webmaster@ucsg.edu.ec");
-        helper.setCc("admision.tec@cu.ucsg.edu.ec");
-        helper.setBcc("ismael.sosa@cu.ucsg.edu.ec");
+        helper.setCc(cc);
+        helper.setBcc(bccArray);
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true);
