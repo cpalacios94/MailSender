@@ -1,0 +1,1 @@
+http://172.16.100.70:8080/sendEmail?to=ismael.sosa@cu.ucsg.edu.ec'||LV_VARIABLE||'subject=prueba'||LV_VARIABLE||'nombre=Eduardo'||LV_VARIABLE||'mensaje=test'||LV_VARIABLE||'link=www.google.com')--'wsf.cdyne.com/WeatherWS/Weather.asmx';
