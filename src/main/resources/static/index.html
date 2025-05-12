@@ -6,40 +6,86 @@
     <title>Enviar Correo (QA)</title>
 </head>
 <body>
+<h1>Enviar Correo Electrónico</h1>
+
+<!-- Formulario anterior con plantilla -->
 <div id="contenedor">
-    <h1>Enviar Correo Electrónico</h1>
-    <div  id="container">
+    <h2>Correo con plantilla</h2>
+    <div id="container">
         <h3>Email Testing</h3>
         <p>Hola esto es un test de email</p>
     </div>
-    <button id="enviarCorreo">Enviar Correo</button>
+    <button id="enviarCorreo">Enviar Correo con plantilla</button>
+</div>
+
+<hr>
+
+<!-- 🆕 Formulario nuevo para /sendRawEmail -->
+<div id="formularioUrgente">
+    <h2>Correo rápido sin plantilla</h2>
+    <label>Para: <input type="email" id="toRaw" placeholder="destinatario@ejemplo.com"></label><br>
+    <label>Asunto: <input type="text" id="subjectRaw" placeholder="Asunto del correo"></label><br>
+    <label>CC: <input type="text" id="ccRaw" placeholder="opcional"></label><br>
+    <label>BCC: <input type="text" id="bccRaw" placeholder="opcional"></label><br>
+    <label>Mensaje:</label><br>
+    <textarea id="bodyRaw" rows="8" cols="60" placeholder="Escribe aquí el cuerpo del mensaje..."></textarea><br>
+    <input type="checkbox" id="isHtmlRaw">
+    <label for="isHtmlRaw">Enviar como HTML</label><br><br>
+    <button id="enviarRawCorreo">Enviar Correo sin plantilla</button>
 </div>
 
 <script>
-    document.getElementById('enviarCorreo').addEventListener('click', function() {
-        var containerContent = document.getElementById('container').innerHTML; // Obtiene el contenido HTML del div
-        var nombre = "Juan Pérez";  // Simulación de nombre dinámico
-        var link = "https://ucsg.edu.ec";  // Link de prueba
+    // Envío con plantilla (ya configurado)
+    document.getElementById('enviarCorreo').addEventListener('click', function () {
+        var containerContent = document.getElementById('container').innerHTML;
+        var nombre = "Juan Pérez";
+        var link = "https://ucsg.edu.ec";
+        var cc = "";
+        var bcc = "";
 
-        if (containerContent) {
-            var url = "/sendEmail?to=" + encodeURIComponent('jhonny.tomala@outlook.es') +
-                "&subject=" + encodeURIComponent('Test') +
-                "&nombre=" + encodeURIComponent(nombre) +
-                "&mensaje=" + encodeURIComponent(containerContent) +
-                "&link=" + encodeURIComponent(link); // Incluye los parámetros correctos
+        var url = "/sendEmail?" +
+            "to=" + encodeURIComponent('jhonny.tomala@outlook.es') +
+            "&subject=" + encodeURIComponent('Test') +
+            "&cc=" + encodeURIComponent(cc) +
+            "&bcc=" + encodeURIComponent(bcc) +
+            "&nombre=" + encodeURIComponent(nombre) +
+            "&mensaje=" + encodeURIComponent(containerContent) +
+            "&link=" + encodeURIComponent(link);
 
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    alert(data);
-                })
-                .catch(error => {
-                    alert("Error al enviar el correo: " + error);
-                });
-        } else {
-            alert("Por favor, complete todos los campos.");
-        }
+        fetch(url)
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => alert("Error al enviar el correo: " + error));
     });
+
+    // Envío rápido sin plantilla
+    document.getElementById('enviarRawCorreo').addEventListener('click', function () {
+        const to = document.getElementById('toRaw').value;
+        const subject = document.getElementById('subjectRaw').value;
+        const cc = document.getElementById('ccRaw').value;
+        const bcc = document.getElementById('bccRaw').value;
+        const body = document.getElementById('bodyRaw').value;
+        const isHtml = document.getElementById('isHtmlRaw').checked;
+
+        if (!to || !subject || !body) {
+            alert("Por favor completa al menos los campos obligatorios: 'Para', 'Asunto' y 'Mensaje'.");
+            return;
+        }
+
+        const url = "/sendRawEmail?" +
+            "to=" + encodeURIComponent(to) +
+            "&subject=" + encodeURIComponent(subject) +
+            "&cc=" + encodeURIComponent(cc) +
+            "&bcc=" + encodeURIComponent(bcc) +
+            "&body=" + encodeURIComponent(body) +
+            "&isHtml=" + isHtml; // ← asegúrate que esto no falte
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => alert("Error al enviar el correo: " + error));
+    });
+
 </script>
 </body>
 </html>

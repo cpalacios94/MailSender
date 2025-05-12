@@ -17,8 +17,8 @@ public class MailController {
     @GetMapping("/sendEmail")
     @ResponseBody
     public String sendEmail(@RequestParam("to") String to,
-                            @RequestParam("cc") String cc,
-                            @RequestParam("bcc") String bcc,
+                            @RequestParam(value = "cc", required = false, defaultValue = "") String cc,
+                            @RequestParam(value = "bcc", required = false, defaultValue = "") String bcc,
                             @RequestParam("subject") String subject,
                             @RequestParam("nombre") String nombre,
                             @RequestParam("mensaje") String mensaje,
@@ -36,4 +36,23 @@ public class MailController {
             return "Error al enviar el correo: " + e.getMessage();
         }
     }
+
+    @GetMapping("/sendRawEmail")
+    @ResponseBody
+    public String sendRawEmail(@RequestParam("to") String to,
+                               @RequestParam("subject") String subject,
+                               @RequestParam("body") String body,
+                               @RequestParam(value = "cc", required = false, defaultValue = "") String cc,
+                               @RequestParam(value = "bcc", required = false, defaultValue = "") String bcc,
+                               @RequestParam("isHtml") boolean isHtml) {
+        try {
+            emailService.sendSimpleEmail(to, subject, cc, bcc, body, isHtml);
+            return "Correo enviado correctamente a " + to;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return "Error al enviar el correo: " + e.getMessage();
+        }
+    }
+
+
 }
