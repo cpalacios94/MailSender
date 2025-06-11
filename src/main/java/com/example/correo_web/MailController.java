@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.mail.MessagingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @org.springframework.stereotype.Controller
@@ -37,14 +38,17 @@ public class MailController {
         }
     }
 
+    // Controlador: recibe String y no List
     @GetMapping("/sendRawEmail")
     @ResponseBody
-    public String sendRawEmail(@RequestParam("to") String to,
-                               @RequestParam("subject") String subject,
-                               @RequestParam("body") String body,
-                               @RequestParam(value = "cc", required = false, defaultValue = "") String cc,
-                               @RequestParam(value = "bcc", required = false, defaultValue = "") String bcc,
-                               @RequestParam("isHtml") boolean isHtml) {
+    public String sendRawEmail(
+            @RequestParam("to") String to,
+            @RequestParam("subject") String subject,
+            @RequestParam(value = "cc", required = false, defaultValue = "") String cc,
+            @RequestParam(value = "bcc", required = false, defaultValue = "") String bcc,
+            @RequestParam("body") String body,
+            @RequestParam("isHtml") boolean isHtml
+    ) {
         try {
             emailService.sendSimpleEmail(to, subject, cc, bcc, body, isHtml);
             return "Correo enviado correctamente a " + to;

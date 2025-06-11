@@ -11,6 +11,7 @@ import org.thymeleaf.context.Context;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -56,30 +57,52 @@ public class EmailService {
     }
 
 
-    public void sendSimpleEmail(String to, String subject, String cc, String bcc, String body, boolean isHtml) throws MessagingException {
+    // Servicio: aquí hacemos split de comas o punto y coma
+    public void sendSimpleEmail(
+            String to,
+            String subject,
+            String cc,
+            String bcc,
+            String body,
+            boolean isHtml
+    ) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
 
         helper.setFrom("envios.siu@cu.ucsg.edu.ec");
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(body, isHtml);
 
-        if (cc != null && !cc.trim().isEmpty()) {
-            helper.setCc(cc);
-        }
+        // 1) Split para To
+        String[] toArray = Arrays.stream(to.split("[,;]+"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toArray(String[]::new);
+        helper.setTo(toArray);
 
-        if (bcc != null && !bcc.trim().isEmpty()) {
-            String[] bccArray = Arrays.stream(bcc.split(";"))
+        // 2) Split para CC si viene algo
+        if (cc != null && !cc.isBlank()) {
+            String[] ccArray = Arrays.stream(cc.split("[,;]+"))
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
                     .toArray(String[]::new);
-            if (bccArray.length > 0) {
-                helper.setBcc(bccArray);
-            }
+            helper.setCc(ccArray);
         }
 
+        // 3) Split para BCC si viene algo
+        if (bcc != null && !bcc.isBlank()) {
+            String[] bccArray = Arrays.stream(bcc.split("[,;]+"))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .toArray(String[]::new);
+            helper.setBcc(bccArray);
+        }
+
+        // Subject y body
+        helper.setSubject(subject);
+        helper.setText(body, isHtml);
+
+        // Envío final
         mailSender.send(message);
     }
+
 
 }

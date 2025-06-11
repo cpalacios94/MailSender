@@ -8,42 +8,50 @@
 <body>
 <h1>Enviar Correo Electrónico</h1>
 
-<!-- Formulario anterior con plantilla -->
+<!-- Formulario de envío con plantilla -->
 <div id="contenedor">
     <h2>Correo con plantilla</h2>
     <div id="container">
         <h3>Email Testing</h3>
-        <p>Hola esto es un test de email</p>
+        <p>Hola, esto es un test de email.</p>
     </div>
     <button id="enviarCorreo">Enviar Correo con plantilla</button>
 </div>
 
 <hr>
 
-<!-- 🆕 Formulario nuevo para /sendRawEmail -->
+<!-- Formulario nuevo para /sendRawEmail con múltiples destinatarios -->
 <div id="formularioUrgente">
     <h2>Correo rápido sin plantilla</h2>
-    <label>Para: <input type="email" id="toRaw" placeholder="destinatario@ejemplo.com"></label><br>
-    <label>Asunto: <input type="text" id="subjectRaw" placeholder="Asunto del correo"></label><br>
-    <label>CC: <input type="text" id="ccRaw" placeholder="opcional"></label><br>
-    <label>BCC: <input type="text" id="bccRaw" placeholder="opcional"></label><br>
+    <label>Para:
+        <input type="text" id="toRaw" placeholder="dest1@ejemplo.com, dest2@ejemplo.com">
+    </label><br>
+    <label>CC:
+        <input type="text" id="ccRaw" placeholder="cc1@ejemplo.com; cc2@ejemplo.com (opcional)">
+    </label><br>
+    <label>BCC:
+        <input type="text" id="bccRaw" placeholder="bcc1@ejemplo.com,bcc2@ejemplo.com (opcional)">
+    </label><br>
+    <label>Asunto:
+        <input type="text" id="subjectRaw" placeholder="Asunto del correo">
+    </label><br>
     <label>Mensaje:</label><br>
-    <textarea id="bodyRaw" rows="8" cols="60" placeholder="Escribe aquí el cuerpo del mensaje..."></textarea><br>
+    <textarea id="bodyRaw" rows="6" cols="60" placeholder="Escribe aquí el cuerpo del mensaje..."></textarea><br>
     <input type="checkbox" id="isHtmlRaw">
     <label for="isHtmlRaw">Enviar como HTML</label><br><br>
     <button id="enviarRawCorreo">Enviar Correo sin plantilla</button>
 </div>
 
 <script>
-    // Envío con plantilla (ya configurado)
+    /** Envío con plantilla **/
     document.getElementById('enviarCorreo').addEventListener('click', function () {
-        var containerContent = document.getElementById('container').innerHTML;
-        var nombre = "Juan Pérez";
-        var link = "https://ucsg.edu.ec";
-        var cc = "";
-        var bcc = "";
+        const containerContent = document.getElementById('container').innerHTML;
+        const nombre = "Juan Pérez";
+        const link = "https://ucsg.edu.ec";
+        const cc = "";
+        const bcc = "";
 
-        var url = "/sendEmail?" +
+        const url = "/sendEmail?" +
             "to=" + encodeURIComponent('jhonny.tomala@outlook.es') +
             "&subject=" + encodeURIComponent('Test') +
             "&cc=" + encodeURIComponent(cc) +
@@ -58,34 +66,44 @@
             .catch(error => alert("Error al enviar el correo: " + error));
     });
 
-    // Envío rápido sin plantilla
-    document.getElementById('enviarRawCorreo').addEventListener('click', function () {
-        const to = document.getElementById('toRaw').value;
-        const subject = document.getElementById('subjectRaw').value;
-        const cc = document.getElementById('ccRaw').value;
-        const bcc = document.getElementById('bccRaw').value;
-        const body = document.getElementById('bodyRaw').value;
-        const isHtml = document.getElementById('isHtmlRaw').checked;
+    /** Función para dividir direcciones separadas por comas o punto y coma **/
+    function splitAddrs(str) {
+        return str.split(/[,;]+/)      // separa por comas o puntos y coma
+            .map(s => s.trim())  // limpia espacios
+            .filter(Boolean);
+    }
 
-        if (!to || !subject || !body) {
-            alert("Por favor completa al menos los campos obligatorios: 'Para', 'Asunto' y 'Mensaje'.");
+    /** Envío rápido sin plantilla **/
+    document.getElementById('enviarRawCorreo').addEventListener('click', function() {
+        const toRaw   = document.getElementById('toRaw').value.trim();
+        const ccRaw   = document.getElementById('ccRaw').value.trim();
+        const bccRaw  = document.getElementById('bccRaw').value.trim();
+        const subject = document.getElementById('subjectRaw').value.trim();
+        const body    = document.getElementById('bodyRaw').value.trim();
+        const isHtml  = document.getElementById('isHtmlRaw').checked;
+
+        if (!toRaw || !subject || !body) {
+            alert("Por favor completa los campos: Para, Asunto y Mensaje.");
             return;
         }
 
-        const url = "/sendRawEmail?" +
-            "to=" + encodeURIComponent(to) +
-            "&subject=" + encodeURIComponent(subject) +
-            "&cc=" + encodeURIComponent(cc) +
-            "&bcc=" + encodeURIComponent(bcc) +
-            "&body=" + encodeURIComponent(body) +
-            "&isHtml=" + isHtml; // ← asegúrate que esto no falte
+        const params = new URLSearchParams();
 
-        fetch(url)
-            .then(response => response.text())
-            .then(data => alert(data))
-            .catch(error => alert("Error al enviar el correo: " + error));
+        // Agrega múltiples parámetros 'to'
+        splitAddrs(toRaw).forEach(addr => params.append('to', addr));
+        // CC y BCC opcionales
+        if (ccRaw)  splitAddrs(ccRaw).forEach(addr => params.append('cc', addr));
+        if (bccRaw) splitAddrs(bccRaw).forEach(addr => params.append('bcc', addr));
+
+        params.append('subject', subject);
+        params.append('body', body);
+        params.append('isHtml', isHtml);
+
+        fetch('/sendRawEmail?' + params.toString())
+            .then(res => res.text())
+            .then(msg => alert(msg))
+            .catch(err => alert("Error al enviar el correo: " + err));
     });
-
 </script>
 </body>
 </html>
